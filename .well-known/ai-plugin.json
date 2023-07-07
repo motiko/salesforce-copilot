@@ -1,17 +1,18 @@
 {
     "schema_version": "v1",
-    "name_for_human": "TODO List (no auth)",
-    "name_for_model": "todo",
-    "description_for_human": "Manage your TODO list. You can add, remove and view your TODOs.",
-    "description_for_model": "Plugin for managing a TODO list, you can add, remove and view your TODOs.",
+    "name_for_human": "Apex Copilot",
+    "name_for_model": "apex_copilot",
+    "description_for_human": "Resolve Apex code issues with Copilot",
+    "description_for_model": "Resolve Salesforce Apex code issues with Copilot",
     "auth": {
-      "type": "none"
+      "type": "user_http",
+      "authorization_type": "bearer"
     },
     "api": {
       "type": "openapi",
-      "url": "http://localhost:5003/openapi.yaml"
+      "url": "https://8d26-2001-9e8-1563-b00-5ddc-15fe-499d-1da1.ngrok-free.app//openapi.yaml"
     },
-    "logo_url": "http://localhost:5003/logo.png",
+    "logo_url": "https://8d26-2001-9e8-1563-b00-5ddc-15fe-499d-1da1.ngrok-free.app//logo.png",
     "contact_email": "legal@example.com",
     "legal_info_url": "http://example.com/legal"
   }

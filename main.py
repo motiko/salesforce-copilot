@@ -1,4 +1,5 @@
 import json
+import requests
 
 import quart
 import quart_cors
@@ -6,29 +7,19 @@ from quart import request
 
 app = quart_cors.cors(quart.Quart(__name__), allow_origin="https://chat.openai.com")
 
-# Keep track of todo's. Does not persist if Python session is restarted.
-_TODOS = {}
+HOST_URL = "https://adeb-dev-ed.my.salesforce.com"
 
-@app.post("/todos/<string:username>")
-async def add_todo(username):
-    request = await quart.request.get_json(force=True)
-    if username not in _TODOS:
-        _TODOS[username] = []
-    _TODOS[username].append(request["todo"])
-    return quart.Response(response='OK', status=200)
-
-@app.get("/todos/<string:username>")
-async def get_todos(username):
-    return quart.Response(response=json.dumps(_TODOS.get(username, [])), status=200)
-
-@app.delete("/todos/<string:username>")
-async def delete_todo(username):
-    request = await quart.request.get_json(force=True)
-    todo_idx = request["todo_idx"]
-    # fail silently, it's a simple plugin
-    if 0 <= todo_idx < len(_TODOS[username]):
-        _TODOS[username].pop(todo_idx)
-    return quart.Response(response='OK', status=200)
+@app.get("/info")
+async def getInfo():
+    authorization = request.headers.get("Authorization")
+    sf_res = requests.get(
+        f"{HOST_URL}/services/data/v58.0/", headers={"Authorization": authorization})
+    sf_body = sf_res.json()
+    response = {
+        "query" : sf_body['query'],
+        "identity" : sf_body['identity']
+        }
+    return quart.Response(response=json.dumps(response), status=200)
 
 @app.get("/logo.png")
 async def plugin_logo():
